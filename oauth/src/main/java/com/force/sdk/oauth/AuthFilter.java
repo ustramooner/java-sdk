@@ -27,7 +27,10 @@
 package com.force.sdk.oauth;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.Principal;
+import java.util.Map;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -37,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import com.force.sdk.connector.ForceConnectionProperty;
 import com.force.sdk.connector.ForceConnectorConfig;
 import com.force.sdk.connector.ForceServiceConnector;
 import com.force.sdk.oauth.connector.ForceOAuthConnectionInfo;
@@ -80,6 +84,9 @@ import com.sforce.ws.*;
  * <li>secure-key-file - specify the location of the file where your AES secure key is stored.</li> For Cookie based
  * session management.
  * </ul>
+ * 
+ * This patch fixes a problem with using connectionName. Bug report is documented here:
+ * https://github.com/forcedotcom/java-sdk/issues/22
  * 
  * @author Fiaz Hossain
  * @author John Simone
@@ -168,7 +175,39 @@ public class AuthFilter implements Filter, SessionRenewer {
             connInfo.setConnectionUrl(connectionUrl);
             oauthConnector.setConnectionInfo(connInfo);
         } else if (config.getInitParameter("connectionName") != null) {
-            oauthConnector.setConnectionName(config.getInitParameter("connectionName"));
+        	connInfo = new ForceOAuthConnectionInfo();
+        	String connectionName = config.getInitParameter("connectionName");
+        	String errorMessage = "Could not load valid ForceOAuthConnectionInfo properties from " + connectionName + ".";
+            
+            Map<ForceConnectionProperty, String> propMap;
+			try {
+				propMap = ForceConnectorUtils.loadConnectorPropsFromName(connectionName);
+			} catch (IOException e1) {
+				throw new RuntimeException(e1);
+			}
+        	if (propMap == null){
+                throw new IllegalArgumentException(errorMessage);
+        	}
+        	
+            String endpointValue = propMap.get(ForceConnectionProperty.ENDPOINT);
+            ForceConnectionProperty.ENDPOINT.validateValue(endpointValue, errorMessage);
+            URL endpointUrl;
+			try {
+				endpointUrl = new URL(endpointValue);
+			} catch (MalformedURLException e) {
+                throw new IllegalArgumentException(e);
+			}
+			connInfo.setEndpoint(endpointUrl.getProtocol() + "://" + endpointUrl.getHost());
+            
+            String oauthKeyValue = propMap.get(ForceConnectionProperty.OAUTH_KEY);
+            ForceConnectionProperty.OAUTH_KEY.validateValue(oauthKeyValue, errorMessage);
+            connInfo.setOauthKey(oauthKeyValue);
+            
+            String oauthSecretValue = propMap.get(ForceConnectionProperty.OAUTH_SECRET);
+            ForceConnectionProperty.OAUTH_SECRET.validateValue(oauthSecretValue, errorMessage);
+            connInfo.setOauthSecret(oauthSecretValue);
+            
+            oauthConnector.setConnectionInfo(connInfo);
         } else {
             throw new IllegalArgumentException("Could not find any init state for AuthFilter. "
                     + "Please specify an endpoint, oauthKey and oauthSecret or a connection url or a connection name.");
