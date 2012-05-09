@@ -45,7 +45,7 @@ public abstract class BaseForceObject {
         return this.id;
     }
     
-    public void setId(String id) {
+    void setId(String id) {
         this.id = id;
     }
 }

@@ -44,7 +44,7 @@ public abstract class BaseForceCustomObject extends BaseForceStandardObject {
         return this.isDeleted;
     }
 
-    public void setIsDeleted(boolean isDeleted) {
+    void setIsDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
     

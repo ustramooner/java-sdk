@@ -68,7 +68,7 @@ public abstract class BaseForceStandardObject extends BaseForceObject {
         return this.createdDate;
     }
 
-    public void setCreatedDate(java.util.Calendar createdDate) {
+    void setCreatedDate(java.util.Calendar createdDate) {
         this.createdDate = createdDate;
     }
     
@@ -77,7 +77,7 @@ public abstract class BaseForceStandardObject extends BaseForceObject {
         return this.lastModifiedDate;
     }
 
-    public void setLastModifiedDate(java.util.Calendar lastModifiedDate) {
+    void setLastModifiedDate(java.util.Calendar lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
@@ -85,7 +85,7 @@ public abstract class BaseForceStandardObject extends BaseForceObject {
         return this.systemModstamp;
     }
 
-    public void setSystemModstamp(java.util.Calendar systemModstamp) {
+    void setSystemModstamp(java.util.Calendar systemModstamp) {
         this.systemModstamp = systemModstamp;
     }
 }
