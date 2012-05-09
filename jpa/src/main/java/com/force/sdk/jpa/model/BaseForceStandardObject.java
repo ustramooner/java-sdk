@@ -44,11 +44,11 @@ public abstract class BaseForceStandardObject extends BaseForceObject {
     protected java.util.Calendar lastModifiedDate;
     protected java.util.Calendar systemModstamp;
 
+    @Basic(optional = false)
     public String getName() {
         return this.name;
     }
 
-    @Basic(optional = false)
     public void setName(String name) {
         this.name = name;
     }
