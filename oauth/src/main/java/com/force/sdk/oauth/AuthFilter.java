@@ -191,6 +191,11 @@ public class AuthFilter implements Filter, SessionRenewer {
         	
             String endpointValue = propMap.get(ForceConnectionProperty.ENDPOINT);
             ForceConnectionProperty.ENDPOINT.validateValue(endpointValue, errorMessage);
+            
+            if ( !endpointValue.startsWith("http://") && !endpointValue.startsWith("https://")){
+            	endpointValue = "https://" + endpointValue;
+            }
+            
             URL endpointUrl;
 			try {
 				endpointUrl = new URL(endpointValue);
