@@ -122,9 +122,7 @@ public class ForceStoreSchemaHandler implements StoreSchemaHandler {
                 // Similar to PersistenceUtils.createObjectSchema
                 if (PersistenceUtils.hasNoSchema(cmd)) continue;
                 TableName tableName = TableName.createTableName(mconn.getNamespace(), cmd);
-                if (cmd.getSuperAbstractClassMetaData() == null) {
                    sObjectNames.add(tableName.getForceApiName());
-                }
             }
             // Setup the initialization cache
             sObjectResults = new HashMap<String, DescribeSObjectResult>(sObjectNames.size());
