@@ -146,7 +146,7 @@ public class ForceStoreSchemaHandler implements StoreSchemaHandler {
             }
         } catch (InvalidSObjectFault ie) {
             // Well we seem to be missing some objects so we just fall back to single item describe as we go along
-            LOGGER.trace("Describes sObjects failed: ", ie);
+            LOGGER.error("Describes sObjects failed: ", ie);
         } catch (ConnectionException x) {
             throw new NucleusException(x.getMessage(), x);
         }
