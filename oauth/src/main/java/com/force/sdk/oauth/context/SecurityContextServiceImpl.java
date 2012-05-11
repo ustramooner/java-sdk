@@ -144,6 +144,7 @@ public class SecurityContextServiceImpl implements SecurityContextService {
                 sc = userDataRetrievalService.retrieveUserData(sessionId, endpoint, null);
             } catch (ConnectionException e) {
                 sc = null;
+                LOGGER.warn("userDataRetrievalService connection exception: ", e);
             }
         }
         
