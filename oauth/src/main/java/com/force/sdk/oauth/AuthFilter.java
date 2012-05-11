@@ -231,6 +231,15 @@ public class AuthFilter implements Filter, SessionRenewer {
 
             securityContextServiceImpl.setSecurityContextStorageService(cookieStore);
         }
+        
+        
+        //set cookie path
+        String cookiePath = config.getInitParameter("cookiePath");
+        if ( cookiePath == null ){
+        	//default to context path
+        	cookiePath = config.getServletContext().getContextPath();
+        }
+        securityContextServiceImpl.setCookiePath(cookiePath);
 
         securityContextService = securityContextServiceImpl;
         

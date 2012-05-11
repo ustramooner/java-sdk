@@ -56,6 +56,7 @@ public class SecurityContextServiceImpl implements SecurityContextService {
 
     private UserDataRetrievalService userDataRetrievalService = null;
     private SecurityContextStorageService securityContextStorageService = null;
+    private String cookiePath;
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityContextServiceImpl.class);
 
     public void setUserDataRetrievalService(UserDataRetrievalService userDataRetrievalService) {
@@ -77,7 +78,7 @@ public class SecurityContextServiceImpl implements SecurityContextService {
         } catch (ContextStoreException e) {
             LOGGER.error("Cannot store security information: ", e);
         }
-        SecurityContextUtil.setCookieValues(sc, response, SecurityContextUtil.useSecureCookies(request));
+        SecurityContextUtil.setCookieValues(sc, response, SecurityContextUtil.useSecureCookies(request), cookiePath);
     }
     
     /**
@@ -165,4 +166,8 @@ public class SecurityContextServiceImpl implements SecurityContextService {
         return securityContextStorageService.getSecureKey();
     }
     
+    @Override
+    public void setCookiePath(String cookiePath) {
+    	this.cookiePath = cookiePath;
+    }
 }

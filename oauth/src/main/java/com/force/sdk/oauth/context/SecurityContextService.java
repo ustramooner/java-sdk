@@ -92,4 +92,9 @@ public interface SecurityContextService {
      */
     SecretKeySpec getSecretKey() throws ForceEncryptionException;
 
+    /**
+     * Sets the cookie path to be used
+     * @param cookiePath String
+     */
+    public void setCookiePath(String cookiePath);
 }
