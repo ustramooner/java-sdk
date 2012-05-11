@@ -37,7 +37,8 @@ import com.force.sdk.jpa.annotation.CustomObject;
  *
  * @author Tim Kral
  **/
-@Entity
+@Entity(name="User")
+@Table(name="User")
 @CustomObject(readOnlySchema = true, virtualSchema = true)
 public class ForceOwner {
 
